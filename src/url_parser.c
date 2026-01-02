@@ -11,42 +11,42 @@ static struct url init_url_defaults(){
     return result;
 }
 
-static void skip_scheme(const char* url, int* urlOffset) {
+static void skip_scheme(const char* url, int* url_offset) {
     if(strncmp(url, "http://", 7) == 0){
-        *urlOffset += 7;
+        *url_offset += 7;
     }
 }
 
-static int parse_host(const char* url, struct url* result, int* urlOffset) {
-    int hostOffset = 0;
+static int parse_host(const char* url, struct url* result, int* url_offset) {
+    int host_offset = 0;
     while (1) {
-        char curr = url[*urlOffset];
+        char curr = url[*url_offset];
         if (curr == '\0' || curr == ':' || curr == '/') {
             break;
         }
-        if (hostOffset >= 255) {
+        if (host_offset >= 255) {
             return 0;
         }
 
-        result->host[hostOffset] = url[*urlOffset];
+        result->host[host_offset] = url[*url_offset];
 
-        hostOffset++;
-        (*urlOffset)++;
+        host_offset++;
+        (*url_offset)++;
     }
-    result->host[hostOffset] = '\0';
+    result->host[host_offset] = '\0';
 
     return 1;
 }
 
-static int parse_port(const char* url, struct url* result, int* urlOffset) {
-    if (url[*urlOffset] != ':'){
+static int parse_port(const char* url, struct url* result, int* url_offset) {
+    if (url[*url_offset] != ':'){
         return 1;
     }
-    (*urlOffset)++;
+    (*url_offset)++;
 
     result->port = 0;
     while (1) {
-        char curr = url[*urlOffset];
+        char curr = url[*url_offset];
         if (curr == '\0' || curr == '/') {
             break;
         }
@@ -58,7 +58,7 @@ static int parse_port(const char* url, struct url* result, int* urlOffset) {
         result->port *= 10;
         result-> port += curr - '0';
 
-        (*urlOffset)++;
+        (*url_offset)++;
     }
 
     if (result->port > 65535) {
@@ -68,28 +68,28 @@ static int parse_port(const char* url, struct url* result, int* urlOffset) {
     return 1;
 }
 
-static int parse_path(const char* url, struct url* result, int* urlOffset) {
-    if (url[*urlOffset] != '/'){
+static int parse_path(const char* url, struct url* result, int* url_offset) {
+    if (url[*url_offset] != '/'){
         return 1;
     }
-    (*urlOffset)++;
+    (*url_offset)++;
 
-    int pathOffset = 1;
+    int path_offset = 1;
     while (1) {
-        char curr = url[*urlOffset];
+        char curr = url[*url_offset];
         if (curr == '\0') {
             break;
         }
-        if (pathOffset >= 1023) {
+        if (path_offset >= 1023) {
             return 0;
         }
 
-        result->path[pathOffset] = url[*urlOffset];
+        result->path[path_offset] = url[*url_offset];
 
-        pathOffset++;
-        (*urlOffset)++;
+        path_offset++;
+        (*url_offset)++;
     }
-    result->path[pathOffset] = '\0';
+    result->path[path_offset] = '\0';
 
     return 1;
 }
@@ -105,13 +105,13 @@ struct url parse_url(const char* url){
         return result;
     }
 
-    int urlOffset = 0;
+    int url_offset = 0;
 
-    skip_scheme(url, &urlOffset);
+    skip_scheme(url, &url_offset);
     if (
-        !parse_host(url, &result, &urlOffset) ||
-        !parse_port(url, &result, &urlOffset) ||
-        !parse_path(url, &result, &urlOffset)
+        !parse_host(url, &result, &url_offset) ||
+        !parse_port(url, &result, &url_offset) ||
+        !parse_path(url, &result, &url_offset)
     ){
         return result;
     }

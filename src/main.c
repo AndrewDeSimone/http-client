@@ -1,6 +1,8 @@
 #include "url_parser.h"
+#include "request_builder.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main(int argc, char** argv) {
 
@@ -18,9 +20,11 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    printf("Host name: %s\n", parsed_url.host);
-    printf("Port number: %d\n", parsed_url.port);
-    printf("Path: %s\n", parsed_url.path);
+    char* request = build_request(parsed_url);
+
+    printf(request);
+
+    free(request);
 
     return 0;
 }
