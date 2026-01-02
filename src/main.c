@@ -1,8 +1,11 @@
 #include "url_parser.h"
 #include "request_builder.h"
+#include "create_socket.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 int main(int argc, char** argv) {
 
@@ -22,9 +25,16 @@ int main(int argc, char** argv) {
 
     char* request = build_request(parsed_url);
 
-    printf(request);
+    SOCKET sock = create_socket(parsed_url.host, parsed_url.port);
+
+    //send request
 
     free(request);
+
+    //listen for response
+
+    closesocket(sock);
+    WSACleanup();
 
     return 0;
 }

@@ -13,7 +13,7 @@ all: $(TARGET)
 
 # How to build the executable
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) -lws2_32
 
 # Clean up the executable
 clean:
