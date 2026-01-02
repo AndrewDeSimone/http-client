@@ -25,7 +25,18 @@ int main(int argc, char** argv) {
 
     char* request = build_request(parsed_url);
 
+    if (request == NULL) {
+        fprintf(stderr, "Error: insufficient memory");
+        return 3; 
+    }
+
     SOCKET sock = create_socket(parsed_url.host, parsed_url.port);
+    if (sock == INVALID_SOCKET) {
+        fprintf(stderr, "Error: failed to create socket\n");
+        free(request);
+        WSACleanup();
+        return 4;
+    }
 
     //send request
 
