@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -std=c11
 TARGET = http-client
 
 # Source files
-SRC = src/main.c
+SRC = $(wildcard src/*.c)
 
 # Default target: build the client
 all: $(TARGET)
