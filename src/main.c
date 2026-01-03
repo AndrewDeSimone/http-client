@@ -1,6 +1,7 @@
 #include "url_parser.h"
 #include "request_builder.h"
 #include "create_socket.h"
+#include "send_request.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -38,7 +39,13 @@ int main(int argc, char** argv) {
         return 4;
     }
 
-    //send request
+    if (send_request(sock, request) == -1) {
+        fprintf(stderr, "Error: failed to send request\n");
+        free(request);
+        closesocket(sock);
+        WSACleanup();
+        return 5;
+    }
 
     free(request);
 
