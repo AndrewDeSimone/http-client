@@ -20,14 +20,14 @@ int main(int argc, char** argv) {
     struct url parsed_url = parse_url(argv[1]);
 
     if (parsed_url.valid == 0) {
-        fprintf(stderr, "Error: invalid url");
+        fprintf(stderr, "Error: invalid url\n");
         return 2;
     }
 
     char* request = build_request(parsed_url);
 
     if (request == NULL) {
-        fprintf(stderr, "Error: insufficient memory");
+        fprintf(stderr, "Error: insufficient memory\n");
         return 3; 
     }
 
