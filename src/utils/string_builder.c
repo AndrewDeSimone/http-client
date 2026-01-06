@@ -33,3 +33,20 @@ int sb_append(struct sb* sb, const char* str) {
 
     return 1;
 }
+
+int sb_append_len(struct sb* sb, const char* str, size_t len) {
+    size_t remaining_length = sb->cap - sb->len;
+
+    while (len + 1 > remaining_length) {
+        char* tmp = realloc(sb->buf, sb->cap * 2);
+        if (!tmp) return 0;
+        sb->buf = tmp;
+        sb->cap *= 2;
+        remaining_length = sb->cap - sb->len;
+    }
+
+    memcpy(sb->buf + sb->len, str, len);
+    sb->len += len;
+    sb->buf[sb->len] = '\0';
+    return 1;
+}

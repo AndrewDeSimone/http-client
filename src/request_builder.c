@@ -16,6 +16,7 @@ char* build_request(struct url url) {
     if(!sb_append(&builder, "GET ") ||
         !sb_append(&builder, url.path) ||
         !sb_append(&builder,  " HTTP/1.1\r\n") ||
+        !sb_append(&builder, "Connection: close\r\n") ||
         !sb_append(&builder, "Host: ") ||
         !sb_append(&builder, url.host) ||
         !sb_append(&builder, ":")

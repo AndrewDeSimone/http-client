@@ -2,6 +2,7 @@
 #include "request_builder.h"
 #include "create_socket.h"
 #include "send_request.h"
+#include "get_response.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -49,8 +50,16 @@ int main(int argc, char** argv) {
 
     free(request);
 
-    //listen for response
+    char* response = get_response(sock);
 
+    if (response == NULL) {
+        closesocket(sock);
+        WSACleanup();
+    }
+
+    printf(response);
+
+    free(response);
     closesocket(sock);
     WSACleanup();
 
